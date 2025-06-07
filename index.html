@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Title Screen -->
+        <div id="title-screen">
+            <div class="logo-container">
+                <img src="https://i.postimg.cc/G3ZqyZS1/pythongamelogo.png" alt="Python Game Logo" class="game-logo title-logo">
+            </div>
+            <div class="menu-buttons">
+                <button id="one-player-button">1 Player</button>
+                <button id="two-player-button">2 Players</button>
+                <button id="how-to-play-button">How to Play</button>
+            </div>
+        </div>
+        
+        <!-- Multiplayer Options Screen -->
+        <div id="multiplayer-screen" class="hidden">
+            <div class="logo-container small">
+                <img src="https://i.postimg.cc/G3ZqyZS1/pythongamelogo.png" alt="Python Game Logo" class="game-logo small-logo">
+            </div>
+            <h2>Select Mode</h2>
+            <div class="menu-buttons">
+                <button id="local-button">Local Multiplayer</button>
+                <button id="cpu-button">VS CPU</button>
+                <button id="back-button">Back</button>
+            </div>
+        </div>
+        
+        <!-- Game Rules Popup -->
+        <div id="game-rules" class="hidden">
+            <h2>HOW TO PLAY</h2>
+            <div class="rules-section">
+                <h3>CONTROLS:</h3>
+                <p>- Use ARROW KEYS to move your snake</p>
+                <p>- In 2-player mode, Player 2 uses WASD keys</p>
+            </div>
+            <div class="rules-section">
+                <h3>OBJECTIVE:</h3>
+                <p>- Eat red apples to grow longer and score points</p>
+                <p>- Catch golden bonus fruits for extra growth and 5 points!</p>
+            </div>
+            <div class="rules-section">
+                <h3>DANGERS:</h3>
+                <p>- Avoid hitting walls or your own body</p>
+                <p>- Beware of blue birds that can cut your snake in half!</p>
+                <p>- In multiplayer, don't crash into the other snake</p>
+            </div>
+            <div class="rules-section">
+                <h3>TIPS:</h3>
+                <p>- The longer your snake, the higher your score</p>
+                <p>- Plan your route carefully to avoid getting trapped</p>
+                <p>- Try to intercept bonus items before your opponent</p>
+            </div>
+            <button id="close-rules-button">Close</button>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="game-screen" class="hidden">
+            <div class="game-header">
+                <div class="logo-container small">
+                    <img src="https://i.postimg.cc/G3ZqyZS1/pythongamelogo.png" alt="Python Game Logo" class="game-logo small-logo">
+                </div>
+                <div class="scores-container">
+                    <div class="score-container">
+                        <span class="player1-label">Player 1: </span>
+                        <span id="score-p1">0</span>
+                    </div>
+                    <div class="score-container player2-score hidden">
+                        <span class="player2-label">Player 2: </span>
+                        <span id="score-p2">0</span>
+                    </div>
+                </div>
+            </div>
+            <div id="game-board"></div>
+            <div class="game-controls">
+                <div class="mobile-controls">
+                    <button id="up-button">↑</button>
+                    <div class="horizontal-controls">
+                        <button id="left-button">←</button>
+                        <button id="right-button">→</button>
+                    </div>
+                    <button id="down-button">↓</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Game Over Screen - Logo removed -->
+        <div id="game-over" class="hidden">
+            <h2>Game Over!</h2>
+            <div id="single-player-result">
+                <p>Your final score: <span id="final-score">0</span></p>
+            </div>
+            <div id="multiplayer-result" class="hidden">
+                <p>Player 1 score: <span id="final-score-p1">0</span></p>
+                <p>Player 2 score: <span id="final-score-p2">0</span></p>
+                <p id="winner-text"></p>
+            </div>
+            <button id="play-again-button">Play Again</button>
+            <button id="main-menu-button">Main Menu</button>
+        </div>
+    </div>
+    
+    <!-- JavaScript to handle the background class changes and game rules -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get element references
+            const titleScreen = document.getElementById('title-screen');
+            const multiplayerScreen = document.getElementById('multiplayer-screen');
+            const gameScreen = document.getElementById('game-screen');
+            const gameOverScreen = document.getElementById('game-over');
+            const gameRules = document.getElementById('game-rules');
+            
+            // Get button elements
+            const howToPlayButton = document.getElementById('how-to-play-button');
+            const closeRulesButton = document.getElementById('close-rules-button');
+            const backButton = document.getElementById('back-button');
+            
+            // Game mode handling
+            const onePlayerButton = document.getElementById('one-player-button');
+            const twoPlayerButton = document.getElementById('two-player-button');
+            const localButton = document.getElementById('local-button');
+            const cpuButton = document.getElementById('cpu-button');
+            const mainMenuButton = document.getElementById('main-menu-button');
+            
+            // Handler for player label update
+            function updatePlayerLabel() {
+                const playerLabel = document.querySelector('.player1-label');
+                const isSinglePlayer = document.body.classList.contains('single-player');
+                
+                if (playerLabel && isSinglePlayer) {
+                    playerLabel.textContent = "Score: ";
+                } else if (playerLabel) {
+                    playerLabel.textContent = "Player 1: ";
+                }
+            }
+            
+            // How to Play button
+            howToPlayButton.addEventListener('click', function() {
+                gameRules.classList.remove('hidden');
+                setTimeout(function() {
+                    gameRules.classList.add('fade-in');
+                }, 10);
+            });
+            
+            // Close rules button
+            closeRulesButton.addEventListener('click', function() {
+                gameRules.classList.remove('fade-in');
+                setTimeout(function() {
+                    gameRules.classList.add('hidden');
+                }, 300); // Wait for fade out animation
+            });
+            
+            // Make sure handlers for game mode switching update the player label
+            if (onePlayerButton) {
+                const originalClick = onePlayerButton.onclick;
+                onePlayerButton.onclick = function(e) {
+                    document.body.classList.add('single-player');
+                    document.body.classList.remove('multiplayer-game');
+                    setTimeout(updatePlayerLabel, 10);
+                    if (originalClick) originalClick.call(this, e);
+                };
+            }
+            
+            if (localButton) {
+                const originalClick = localButton.onclick;
+                localButton.onclick = function(e) {
+                    document.body.classList.add('multiplayer-game');
+                    document.body.classList.remove('single-player');
+                    setTimeout(updatePlayerLabel, 10);
+                    if (originalClick) originalClick.call(this, e);
+                };
+            }
+            
+            if (cpuButton) {
+                const originalClick = cpuButton.onclick;
+                cpuButton.onclick = function(e) {
+                    document.body.classList.add('multiplayer-game');
+                    document.body.classList.remove('single-player');
+                    setTimeout(updatePlayerLabel, 10);
+                    if (originalClick) originalClick.call(this, e);
+                };
+            }
+            
+            // Initial check for player label
+            updatePlayerLabel();
+        });
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html>

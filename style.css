@@ -1,0 +1,624 @@
+/* Import Google Font - Permanent Marker for jungle/rugged theme */
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+/* Base styles with python-inspired colors */
+body {
+    font-family: 'Permanent Marker', cursive;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    overflow: hidden;
+    position: relative;
+}
+
+/* First background layer */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://i.postimg.cc/nhzvC2YD/pythonnormal.png');
+    background-size: cover;
+    background-repeat: repeat-x;
+    animation: slideBackground1 30s linear infinite;
+    z-index: -1;
+}
+
+/* Second background layer - offset from first */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 100%; /* Start offscreen */
+    width: 100%;
+    height: 100%;
+    background-image: url('https://i.postimg.cc/nhzvC2YD/pythonnormal.png');
+    background-size: cover;
+    background-repeat: repeat-x;
+    animation: slideBackground2 30s linear infinite;
+    z-index: -1;
+}
+
+/* Multiplayer mode backgrounds */
+body.multiplayer-game::before,
+body.multiplayer-game::after {
+    background-image: url('https://i.postimg.cc/QxspQhs1/albinopython.png');
+}
+
+/* First layer animation */
+@keyframes slideBackground1 {
+    0% { left: 0; }
+    50% { left: -100%; }
+    50.01% { left: 100%; }
+    100% { left: 0; }
+}
+
+/* Second layer animation (offset) */
+@keyframes slideBackground2 {
+    0% { left: 100%; }
+    50% { left: 0; }
+    100% { left: -100%; }
+}
+
+/* Logo styles */
+.logo-container {
+    margin: 0 auto 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.game-logo {
+    max-width: 100%;
+    height: auto;
+}
+
+.title-logo {
+    width: 350px;
+    margin-bottom: 10px;
+}
+
+.small-logo {
+    width: 200px;
+    margin-bottom: 5px;
+}
+
+.game-container {
+    text-align: center;
+    position: relative;
+    max-width: 95%;
+    max-height: 95vh;
+    margin: 0 auto;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Make title screen and multiplayer screen backgrounds transparent */
+#title-screen, #multiplayer-screen {
+    background-color: transparent;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+/* Game Rules Popup */
+#game-rules {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    background: linear-gradient(to bottom, #f3dfc0, #c9a97d);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.4);
+    max-width: 500px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    text-align: left;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#game-rules.fade-in {
+    opacity: 1;
+}
+
+#game-rules h2 {
+    text-align: center;
+    color: #704214;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 2em;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.rules-section {
+    margin-bottom: 15px;
+}
+
+.rules-section h3 {
+    color: #8B5A2B;
+    margin: 10px 0 5px 0;
+    border-bottom: 2px solid rgba(139, 90, 43, 0.3);
+    padding-bottom: 3px;
+}
+
+.rules-section p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.start-prompt {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #8B5A2B;
+    animation: pulse-text 1.5s infinite alternate;
+    display: none; /* Hide the "Press arrow keys to start" text */
+}
+
+#close-rules-button {
+    border-radius: 8px;
+    margin: 20px auto 5px;
+    padding: 10px 20px;
+    width: auto;
+    display: block;
+    background-color: #8B5A2B;
+    background-image: linear-gradient(to bottom, #A0522D, #8B5A2B);
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Permanent Marker', cursive;
+    font-weight: normal;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+#close-rules-button:hover {
+    background-image: linear-gradient(to bottom, #8B5A2B, #704214);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+#close-rules-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes pulse-text {
+    from {
+        opacity: 0.7;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+/* Game screen with sandy gradient background */
+#game-screen {
+    background: linear-gradient(to bottom, #f3dfc0, #c9a97d);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    max-height: 95vh;
+    overflow: auto;
+}
+
+.game-header {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Python-themed typography */
+h2 {
+    color: #704214;
+    font-weight: normal;
+    margin-top: 10px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    font-size: 1.8em;
+}
+
+/* Score display with python theme */
+.scores-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.score-container {
+    font-size: 16px;
+    font-weight: normal;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 5px 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Score label styles */
+.player1-label {
+    color: #8B5A2B;
+}
+
+.player2-label {
+    color: #5D3A1A;
+}
+
+/* Score flash animation for bird hits */
+@keyframes score-flash {
+    0% { background-color: rgba(255, 255, 255, 0.85); }
+    50% { background-color: rgba(255, 100, 100, 0.9); }
+    100% { background-color: rgba(255, 255, 255, 0.85); }
+}
+
+.score-flash {
+    animation: score-flash 0.25s ease-out;
+}
+
+/* Gold flash animation for bonus food collection */
+@keyframes score-gold-flash {
+    0% { background-color: rgba(255, 255, 255, 0.85); }
+    50% { background-color: rgba(255, 215, 0, 0.9); } /* Gold color */
+    100% { background-color: rgba(255, 255, 255, 0.85); }
+}
+
+.score-gold-flash {
+    animation: score-gold-flash 0.25s ease-out;
+}
+
+/* Game board with dark jungle green background */
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(20, 16px);
+    grid-template-rows: repeat(20, 16px);
+    border: 2px solid #5D3A1A;
+    margin: 0 auto;
+    background-color: #2a5e34; /* Darker jungle green */
+    background-image: linear-gradient(rgba(0,40,0,0.2) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0,40,0,0.2) 1px, transparent 1px);
+    background-size: 16px 16px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Player 1 snake - gold and navy blue theme */
+.snake-part {
+    background-color: #DAA520; /* Gold */
+    background-image: linear-gradient(45deg, #DAA520 25%, #000080 25%, #000080 50%, #DAA520 50%, #DAA520 75%, #000080 75%, #000080 100%);
+    background-size: 6px 6px;
+    border: 1px solid #000080;
+    border-radius: 3px;
+}
+
+.snake-part:first-child {
+    background-color: #000080; /* Navy blue head */
+    border-radius: 5px;
+}
+
+/* Player 2 snake - light yellow and white theme (albino) */
+.snake-part-p2 {
+    background-color: #FFFACD; /* Light yellow */
+    background-image: linear-gradient(45deg, #FFFACD 25%, #FFFFFF 25%, #FFFFFF 50%, #FFFACD 50%, #FFFACD 75%, #FFFFFF 75%, #FFFFFF 100%);
+    background-size: 6px 6px;
+    border: 1px solid #E6E6FA;
+    border-radius: 3px;
+}
+
+/* Game elements - keeping exact same animations but improving colors */
+.food {
+    background-color: #FF5252;
+    background-image: radial-gradient(circle, #FF5252 60%, #c41c1c 100%);
+    border: 1px solid #c41c1c;
+    border-radius: 50%;
+    box-shadow: 0 0 3px rgba(255, 82, 82, 0.7);
+}
+
+.bonus-food {
+    background-color: #FFD700;
+    background-image: radial-gradient(circle, #FFD700 60%, #DAA520 100%);
+    border: 1px solid #DAA520;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.7);
+    animation: pulse 0.5s infinite alternate;
+}
+
+.bird {
+    background-color: #1E90FF;
+    background-image: radial-gradient(circle, #1E90FF 60%, #0000CD 100%);
+    border: 1px solid #0000CD;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.7);
+    animation: fly 0.3s infinite alternate;
+}
+
+/* Maintaining the EXACT same animation keyframes for game elements */
+@keyframes pulse {
+    from {
+        transform: scale(0.8);
+    }
+    to {
+        transform: scale(1.2);
+    }
+}
+
+@keyframes fly {
+    from {
+        transform: scale(0.8) translateY(0);
+    }
+    to {
+        transform: scale(1.1) translateY(-3px);
+    }
+}
+
+/* Enhanced buttons with python-inspired styling */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 25px auto;
+    max-width: 300px;
+}
+
+/* Apply font to ALL buttons */
+button {
+    font-family: 'Permanent Marker', cursive;
+    font-weight: normal;
+}
+
+#title-screen button, 
+#multiplayer-screen button,
+#play-again-button,
+#main-menu-button {
+    background-color: #8B5A2B;
+    background-image: linear-gradient(to bottom, #A0522D, #8B5A2B);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    font-weight: normal;
+    letter-spacing: 1px;
+    font-family: 'Permanent Marker', cursive;
+}
+
+#how-to-play-button {
+    background-color: #5D3A1A; /* Slightly different color to distinguish it */
+    background-image: linear-gradient(to bottom, #704214, #5D3A1A);
+}
+
+#how-to-play-button:hover {
+    background-image: linear-gradient(to bottom, #5D3A1A, #4B2D15);
+}
+
+#title-screen button:hover, 
+#multiplayer-screen button:hover,
+#play-again-button:hover,
+#main-menu-button:hover {
+    background-image: linear-gradient(to bottom, #8B5A2B, #704214);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+#title-screen button:active, 
+#multiplayer-screen button:active,
+#play-again-button:active,
+#main-menu-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile controls styling */
+.game-controls {
+    margin-top: 10px;
+}
+
+.mobile-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.horizontal-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 5px 0;
+}
+
+.mobile-controls button {
+    width: 40px;
+    height: 40px;
+    background-color: #8B5A2B;
+    background-image: linear-gradient(to bottom, #A0522D, #8B5A2B);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    font-family: 'Permanent Marker', cursive;
+}
+
+.mobile-controls button:hover {
+    background-image: linear-gradient(to bottom, #8B5A2B, #704214);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-controls button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Game over screen with enhanced styling and sandy gradient */
+#game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(to bottom, #f3dfc0, #c9a97d);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.25);
+    z-index: 10;
+    min-width: 300px;
+    border: 1px solid rgba(139, 90, 43, 0.3);
+    max-width: 90%;
+}
+
+/* Modified Game Over buttons to be more rounded and have more space between them */
+#play-again-button,
+#main-menu-button {
+    border-radius: 15px;
+    margin: 10px auto;
+    width: 85%;
+    display: block;
+}
+
+#winner-text {
+    font-weight: normal;
+    font-size: 1.3em;
+    margin-top: 15px;
+    padding: 10px;
+    color: #8B5A2B;
+    background-color: rgba(139, 90, 43, 0.1);
+    border-radius: 8px;
+}
+
+/* Apply Permanent Marker font to specific text elements */
+p, span, h1, h2, h3, h4, h5, h6, button, input, select, textarea {
+    font-family: 'Permanent Marker', cursive;
+}
+
+/* Apply font to score displays */
+#score-p1, #score-p2, #final-score, #final-score-p1, #final-score-p2 {
+    font-family: 'Permanent Marker', cursive;
+}
+
+/* Utility class */
+.hidden {
+    display: none;
+}
+
+/* Media queries for responsiveness */
+@media (min-width: 768px) {
+    .mobile-controls {
+        display: none;
+    }
+    
+    .title-logo {
+        width: 400px;
+    }
+    
+    .small-logo {
+        width: 220px;
+    }
+    
+    #game-board {
+        grid-template-columns: repeat(20, 20px);
+        grid-template-rows: repeat(20, 20px);
+        background-size: 20px 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .title-logo {
+        width: 280px;
+    }
+    
+    .small-logo {
+        width: 160px;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    #game-rules {
+        max-width: 85%;
+        padding: 15px;
+    }
+    
+    #game-rules h2 {
+        font-size: 1.8em;
+    }
+    
+    .rules-section h3 {
+        font-size: 1.2em;
+    }
+    
+    .rules-section p {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-logo {
+        width: 240px;
+    }
+    
+    .small-logo {
+        width: 140px;
+    }
+    
+    .score-container {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+    
+    .mobile-controls button {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+    
+    #game-board {
+        grid-template-columns: repeat(20, 14px);
+        grid-template-rows: repeat(20, 14px);
+        background-size: 14px 14px;
+    }
+    
+    #game-rules h2 {
+        font-size: 1.5em;
+    }
+    
+    .rules-section h3 {
+        font-size: 1.1em;
+    }
+    
+    .rules-section p {
+        font-size: 0.8em;
+    }
+    
+    .start-prompt {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 350px) {
+    #game-board {
+        grid-template-columns: repeat(20, 12px);
+        grid-template-rows: repeat(20, 12px);
+        background-size: 12px 12px;
+    }
+}
